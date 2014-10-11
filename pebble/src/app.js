@@ -1,17 +1,18 @@
 /**
- * Welcome to Pebble.js!
- *
- * This is where you write your app.
- */
+ * Pebble Munchies
+ * 
+ * Order food from you watch
+ */ 
 
 var UI = require('ui');
 var Vector2 = require('vector2');
 
+var setting = require('settings'); 
+
+
+ 
 var main = new UI.Card({
-  title: 'Pebble.js',
-  icon: 'images/menu_icon.png',
-  subtitle: 'Hello World!',
-  body: 'Press any button.'
+	title: "Restaurants:" 
 });
 
 main.show();
@@ -37,16 +38,17 @@ main.on('click', 'up', function(e) {
 });
 
 main.on('click', 'select', function(e) {
-  var wind = new UI.Window();
-  var textfield = new UI.Text({
-    position: new Vector2(0, 50),
-    size: new Vector2(144, 30),
-    font: 'gothic-24-bold',
-    text: 'Text Anywhere!',
-    textAlign: 'center'
-  });
-  wind.add(textfield);
-  wind.show();
+	setting.config(
+		{
+			url: 'https://google.com'
+		}, 
+		function(e){
+			console.log("I don't know what this does.");
+		}, 
+		function(e){
+		
+		}
+	);
 });
 
 main.on('click', 'down', function(e) {

@@ -1,0 +1,1 @@
+web: ORDRIN_API_KEY='bn1lAtr4jzqJRUZkpiiUzsIPm9Cm4aM_Vxa7QpWeYRQ' MONGO_DB_LINK='mongodb://127.0.0.1:27017/pebblemunchies' nodejs app.js

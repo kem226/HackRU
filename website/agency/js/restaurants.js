@@ -2,7 +2,7 @@
 $(document).ready(function() {
     console.log( "ready!" );
     if (localStorage.getItem('username')) {
-         window.location.replace("http://pebblemunchies.me/restaurants.html");
+        window.location = "http://pebblemunchies.me/restaurants.html"
     }
 });
   

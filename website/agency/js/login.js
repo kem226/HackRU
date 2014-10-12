@@ -69,7 +69,7 @@ function loginRequest(username,password) {
   var request = new XMLHttpRequest();
   
   request.open("POST",this.login,false);
-  request.setRequestHeader("Content-type","");
+  request.setRequestHeader("Content-type","application/json");
   
   var user = {
     'username' : username,
@@ -85,11 +85,10 @@ function loginRequest(username,password) {
  
 function signupRequest(username,password,addr,city,state,zip,phone) {
     
-    
-     var request = new XMLHttpRequest();
-  
-  request.open("POST",this.login,false);
-  request.setRequestHeader("Content-type","");
+  muchiesAPI();
+  var request = new XMLHttpRequest();
+  request.open("POST",this.signup,false);
+  request.setRequestHeader("Content-type","application/json");
   
   var user = {
     'username' : username,

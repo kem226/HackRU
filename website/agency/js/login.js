@@ -47,17 +47,6 @@ function signupSubmit(){
      
 }
   
-  
-  
-
-function muchiesAPI(){
-	this.apilink = '"http://api.pebblemunchies.me:5000';
-	this.login = this.apilink + '/login';
-	this.signup = this.apilink + '/user';
-	//this.listings = this.apilink + '/listings';
-	//this.reviews = this.apilink + '/reviews';
-}
-
 
   
 function loginRequest(username,password) {
@@ -66,7 +55,7 @@ function loginRequest(username,password) {
   
   var request = new XMLHttpRequest();
   
-  request.open("POST",this.login,false);
+  request.open("POST","http://api.pebblemunchies.me:5000/login",false);
   request.setRequestHeader("Content-type","application/json");
   
   var user = {
@@ -85,7 +74,7 @@ function signupRequest(username,password,addr,city,state,zip,phone,fname,lname,n
     
   muchiesAPI();
   var request = new XMLHttpRequest();
-  request.open("POST",this.signup,false);
+  request.open("POST","http://api.pebblemunchies.me:5000/user",false);
   request.setRequestHeader("Content-type","application/json");
   
   var user = {

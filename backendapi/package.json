@@ -28,6 +28,7 @@
     "mongodb": "~1.4.19",
     "body-parser": "~1.9.0",
     "request": "~2.45.0",
-    "ordrin-api": "~1.0.2"
+    "ordrin-api": "~1.0.2",
+    "foreman": "~1.0.0"
   }
 }

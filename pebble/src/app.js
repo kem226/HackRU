@@ -7,9 +7,22 @@
 var UI = require('ui');
 var Vector2 = require('vector2');
 
-var setting = require('settings'); 
+var Settings = require('settings'); 
 
+var username = Settings.data('username'); 
+var password = Settings.data('password');
 
+Settings.config(
+	{ 
+		url : "http://yourmomsintern.com/config.html"
+	},
+	function(e){
+		console.log("in settings")
+	}, 
+	function(e){
+		console.log(JSON.stringify(e.options)); 
+	}
+);
  
 var main = new UI.Card({
 	title: "Restaurants:" 

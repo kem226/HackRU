@@ -2,12 +2,12 @@
 $(document).ready(function() {
     console.log( "ready!" );
     if (localStorage.getItem('username')) {
-        window.location = "http://pebblemunchies.me/restaurants.html"
-    }
-});
+       
+     }else {
+       window.location.replace("http://pebblemunchies.me/login.html");
+     }
   
 function loginSubmit(){
-   window.location.replace("http://pebblemunchies.me/restaurants.html");
     
     document.getElementById("lemail").style.color = "red";
     
@@ -17,7 +17,7 @@ function loginSubmit(){
     var requestResponse = loginRequest(username,password);
     
     
-    if (requestResponse === "ok") {
+    if (requestResponse == "ok") {
         localStorage.setItem('username', username);
         localStorage.setItem('password', password);
         window.location.replace("http://pebblemunchies.me/restaurants.html");
@@ -26,7 +26,6 @@ function loginSubmit(){
 }
   
 function signupSubmit(){
-    window.location.replace("http://pebblemunchies.me/restaurants.html");
     var username = document.getElementById("semail").value;
     var password = document.getElementById("spassword").value;
     var addr = document.getElementById("addr").value;
@@ -38,7 +37,7 @@ function signupSubmit(){
     var requestResponse = signupRequest(username,password,addr,city,state,zip,phone);
     
     
-    if (requestResponse === "ok") {
+    if (requestResponse == "ok") {
         localStorage.setItem('username', username);
         localStorage.setItem('password', password);
         window.location.replace("http://pebblemunchies.me/restaurants.html");
@@ -51,7 +50,7 @@ function signupSubmit(){
 
 function muchiesAPI(){
 	this.apilink = '"http://api.pebblemunchies.me';
-	this.login = this.apilink + '/login';
+	this.login = this.apilink + '/delivery';
 	this.signup = this.apilink + '/signup';
 	//this.listings = this.apilink + '/listings';
 	//this.reviews = this.apilink + '/reviews';
@@ -104,6 +103,6 @@ function signupRequest(username,password,addr,city,state,zip,phone) {
     
 }
 
-
+});
   
 

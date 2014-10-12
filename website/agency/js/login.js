@@ -7,12 +7,11 @@ $(document).ready(function() {
 });
   
 function loginSubmit(){
-   window.location.replace("http://pebblemunchies.me/restaurants.html");
     
     document.getElementById("lemail").style.color = "red";
     
     var username = document.getElementById("lemail").value;
-    var password = document.getElementById("lpassword").value;
+    var password = document.getElementById("lpass").value;
     
     var requestResponse = loginRequest(username,password);
     
@@ -26,9 +25,8 @@ function loginSubmit(){
 }
   
 function signupSubmit(){
-    window.location.replace("http://pebblemunchies.me/restaurants.html");
     var username = document.getElementById("semail").value;
-    var password = document.getElementById("spassword").value;
+    var password = document.getElementById("spass").value;
     var addr = document.getElementById("addr").value;
     var city = document.getElementById("city").value;
     var state = document.getElementById("state").value;
@@ -49,26 +47,13 @@ function signupSubmit(){
      
 }
   
-  
-  
-
-function muchiesAPI(){
-	this.apilink = '"http://api.pebblemunchies.me:5000';
-	this.login = this.apilink + '/login';
-	this.signup = this.apilink + '/user';
-	//this.listings = this.apilink + '/listings';
-	//this.reviews = this.apilink + '/reviews';
-}
-
 
   
 function loginRequest(username,password) {
 
-  muchiesAPI();
-  
   var request = new XMLHttpRequest();
   
-  request.open("POST",this.login,false);
+  request.open("POST","http://pebblemunchies.me:5000/login",false);
   request.setRequestHeader("Content-type","application/json");
   
   var user = {
@@ -85,9 +70,8 @@ function loginRequest(username,password) {
  
 function signupRequest(username,password,addr,city,state,zip,phone,fname,lname,nick) {
     
-  muchiesAPI();
   var request = new XMLHttpRequest();
-  request.open("POST",this.signup,false);
+  request.open("POST","http://pebblemunchies.me:5000/user",false);
   request.setRequestHeader("Content-type","application/json");
   
   var user = {

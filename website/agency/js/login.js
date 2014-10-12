@@ -7,7 +7,6 @@ $(document).ready(function() {
 });
   
 function loginSubmit(){
-   window.location.replace("http://pebblemunchies.me/restaurants.html");
     
     document.getElementById("lemail").style.color = "red";
     
@@ -26,7 +25,6 @@ function loginSubmit(){
 }
   
 function signupSubmit(){
-    window.location.replace("http://pebblemunchies.me/restaurants.html");
     var username = document.getElementById("semail").value;
     var password = document.getElementById("spassword").value;
     var addr = document.getElementById("addr").value;

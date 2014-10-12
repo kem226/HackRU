@@ -60,12 +60,25 @@ h6 {
     margin: 0 auto;
 }
 
-.bg-light-gray {
-    background-color: #f7f7f7;
+.bg-green {
+    background-color: #9DFF4B;
 }
 
-.bg-darkest-gray {
-    background-color: #222;
+.bg-red {
+    background-color: #FF4B81;
+}
+
+.bg-blue {
+    background-color: #ABABFF;
+}
+
+.bg-blue a{
+    color: #333;
+}
+
+.bg-blue a:hover{
+    color: #fed136;
+    text-decoration: none;
 }
 
 .btn-primary {
@@ -258,6 +271,11 @@ fieldset[disabled] .btn-xl.active {
     .navbar-default.navbar-shrink .navbar-brand {
         font-size: 1.5em;
     }
+}
+
+
+header .login{
+    text-align: left;
 }
 
 header {
@@ -858,4 +876,4 @@ img::-moz-selection {
 
 body {
     webkit-tap-highlight-color: #fed136;
-}
+};

@@ -3,6 +3,26 @@
  * 
  * Order food from your watch
  */ 
+var testJSON =
+{
+   "favoriteplaces": {
+    "rname": "place1",
+    "munchies": {
+        "name": "placename1",
+        "nickname": "ordernickname1",
+    }
+   /* "rname": "place2",
+    "munchies": {
+        "name": "placename2",
+        "nickname": "ordernickname2",
+    },
+    "rname": "place3",
+    "munchies": {
+        "name": "placename3",
+        "nickname": "ordernickname3",
+    }*/
+  }
+};
 var UI = require('ui');
 var Vector2 = require('vector2');
 var Settings = require('settings'); 
@@ -34,7 +54,7 @@ var logo = new UI.Image({
   position: new Vector2(0, 0),
   size: new Vector2(144, 60),
   backgroundColor: 'clear',
-  image: 'images/logosmall.png',
+  image: 'images/logosmall.png'
 });
 var text1 = new UI.Text({ 
   text: "Order ->",
@@ -74,6 +94,9 @@ var favoritefoodsMenu = new UI.Menu({
   }]
 });
 var orderConfirmation = new UI.Card({
+  title: 'Order Confirmation',
+  font: 'gothic-12-bold',
+  subtitle: 'Are you sure you would like to order ' + selection2,
   action: {
     up: 'images/Yes_action.png',
     down: 'images/No_action.png'
@@ -85,25 +108,36 @@ main.on('click', 'select', function(e) {
 });
 favoriteplacesMenu.on('select', function(e) {
   console.log('Event: \'select\' on foodplacesMenu');
+  selection1 = e.itemIndex;
   for (var i = 0; i < items.favoriteplaces[selection1].length; i++)
   {
-    favoritefoodsMenu.item(0, i, { title: items.favoriteplaces.munchies[i].nickname });
+    favoritefoodsMenu.item(0, i, {title: items.favoriteplaces.munchies[i].nickname });
   }
   favoritefoodsMenu.show();
+});
+favoritefoodsMenu.on('select', function(e) {
+  console.log('Event: \'select\' on favoritefoodsMenu');
+  selection2 = e.itemIndex;
+  posturl = 'http://pebblemunchies.me:5000/order/' + encodeURIComponent(JSON.stringify(items.favoriteplaces[selection1].munchies[selection2]));
+  orderConfirmation.show();
 });
 orderConfirmation.on('click', 'up', function(e){
    ajax(
   {
-    url: 'http://pebblemunchies.me:5000/order/' + encodeURIComponent(items.favoriteplaces[selection1].munchies[selection2]),
+    url: posturl,
     type: 'json'
   },
   function(sucMsg) {
-    console.log('Successfully fetched user data');
+    console.log('Sucessful Order!');
+    orderConfirmation.hide();
+    favoritefoodsMenu.hide();
+    favoriteplacesMenu.hide();
   },
   function(error) {
-    console.log('Error fetching user data: ' + error);
-    var items;
-    return items;
+    console.log('Order not sent');
+    orderConfirmation.hide();
+    favoritefoodsMenu.hide();
+    favoriteplacesMenu.hide();
   });
 });
 var isData  = Settings.data();
@@ -115,6 +149,8 @@ if (isData)
     type: 'json'
   },
   function(data) {
+    //Testing
+    data = testJSON;
     console.log('Successfully fetched user data');
     for(var i = 0; i < data.length; i++) {
       console.log(data[i].title + " | " + data[i].subtitle);
@@ -128,45 +164,29 @@ if (isData)
     });
     for (var j = 0; j < items.favoriteplaces.length; j++)
     {
-      favoriteplacesMenu.item(0, j, { title: items.favoriteplaces[j].munchies.nick, subtitle: items.favoriteplaces[j].munchies.delivery_time});
+      favoriteplacesMenu.item(0, j, { title: items.favoriteplaces[j].munchies.nick });
     }
-    favoritefoodsMenu = new UI.Menu({
-      sections: [{
-        title: 'Favorite Foods',
-        //items: items.favoritefoods
-      }]
-    });
     return items;
   },
   function(error) {
+    //Testing
+    var data = testJSON;
+    
+    //
     console.log('Error fetching user data: ' + error);
     var items;
+    items = JSON.parse(data);
+    favoriteplacesMenu = new UI.Menu({
+      sections: [{
+        title: 'Favorite Places:'
+      }]
+    });
+    for (var j = 0; j < items.favoriteplaces.length; j++)
+    {
+      favoriteplacesMenu.item(0, j, { title: items.favoriteplaces[j].munchies.nick });
+    }
     return items;
   }
 );
 else
   console.log('uData is empty, no user data request made');
-
-/*
-main.on('click', 'select', function(e) {
-	setting.config(
-		{
-			url: 'https://google.com'
-		}, 
-		function(e){
-			console.log("I don't know what this does.");
-		}, 
-		function(e){
-		
-		}
-	);
-});
-
-main.on('click', 'down', function(e) {
-  var card = new UI.Card();
-  card.title('A Card');
-  card.subtitle('Is a Window');
-  card.body('The simplest window type in Pebble.js.');
-  card.show();
-});
-*/

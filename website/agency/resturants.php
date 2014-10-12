@@ -34,10 +34,10 @@
 
 </head>
 
-<header id="page-top" class="pages">
+<body id="page-top" class="pages">
 
     <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top navbar-shrink">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">

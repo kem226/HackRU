@@ -6,9 +6,7 @@
 
 var UI = require('ui');
 var Vector2 = require('vector2');
-
 var Settings = require('settings'); 
-
 var username = Settings.data('username'); 
 var password = Settings.data('password');
 
@@ -17,20 +15,45 @@ Settings.config(
 		url : "http://yourmomsintern.com/config.html"
 	},
 	function(e){
-		console.log("in settings")
+		console.log("in settings");
 	}, 
 	function(e){
 		console.log(JSON.stringify(e.options)); 
 	}
 );
  
-var main = new UI.Card({
-	title: "Restaurants:" 
+var main = new UI.Window({
+  fullscreen: true,
+  action: {
+    backgroundColor: 'clear',
+  }
 });
-
+var logo = new UI.Image({
+  position: new Vector2(0, 0),
+  size: new Vector2(144, 60),
+  backgroundColor: 'clear',
+  image: 'images/logosmall.png',
+});
+var text1 = new UI.Text({ 
+  text: "Order ->",
+  font: 'gothic-18-bold',
+  position: new Vector2(0, 70),
+  size: new Vector2(144, 20), 
+  textAlign: 'center'
+});
+var text2 = new UI.Text({ 
+  text: "View Settings ->",
+  font: 'gothic-18-bold',
+  position: new Vector2(0, 140),
+  size: new Vector2(144, 20), 
+  textAlign: 'center'
+});
+main.add(logo);
+main.add(text1);
+main.add(text2);
 main.show();
 
-main.on('click', 'up', function(e) {
+/*main.on('click', 'up', function(e) {
   var menu = new UI.Menu({
     sections: [{
       items: [{
@@ -71,3 +94,4 @@ main.on('click', 'down', function(e) {
   card.body('The simplest window type in Pebble.js.');
   card.show();
 });
+*/

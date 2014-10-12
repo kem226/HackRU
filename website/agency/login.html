@@ -41,37 +41,59 @@
 			<h3>
 				Log In
 			</h3>
-			<form role="form">
+			<form role="form" action="resturant.php" method="post">
 				<div class="form-group">
-					 <label for="exampleInputEmail1">Email address</label><input type="email" class="form-control" id="exampleInputEmail1" />
+					 <label for="Email">Email address</label><input type="email" class="form-control" id="exampleInputEmail1" />
 				</div>
 				<div class="form-group">
-					 <label for="exampleInputPassword1">Password</label><input type="password" class="form-control" id="exampleInputPassword1" />
+					 <label for="Password">Password</label><input type="password" class="form-control" id="exampleInputPassword1" />
 			
-				</div> <button type="submit" class="btn btn-default">Submit</button>
+				</div> <button type="submit" name="login" class="btn btn-default">Submit</button>
 			</form>
 		</div>
 		<div class="col-md-6 column">
 			<h3>
 				Sign Up
 			</h3>
-			<form role="form">
+			<form role="form" action="resturant.php" method="post">
                             <div class="form-group">
-					 <label for="exampleInputPassword1">First Name</label><input type="text" class="form-control" id="exampleInputPassword1" />
+					 <label for="FirstName">First Name</label><input type="text" class="form-control" id="exampleInputPassword1" />
 				</div>
                             <div class="form-group">
-					 <label for="exampleInputPassword1">Last Name</label><input type="text" class="form-control" id="exampleInputPassword1" />
+					 <label for="LastName">Last Name</label><input type="text" class="form-control" id="exampleInputPassword1" />
 				</div>
 				<div class="form-group">
-					 <label for="exampleInputEmail1">Email address</label><input type="email" class="form-control" id="exampleInputEmail1" />
+					 <label for="Email">Email address</label><input type="email" class="form-control" id="exampleInputEmail1" />
 				</div>
 				<div class="form-group">
-					 <label for="exampleInputPassword1">Password</label><input type="password" class="form-control" id="exampleInputPassword1" />
+					 <label for="Password">Password</label><input type="password" class="form-control" id="exampleInputPassword1" />
 				</div>
                                 <div class="form-group">
-					 <label for="exampleInputPassword1">Confirm Password</label><input type="password" class="form-control" id="exampleInputPassword1" />
-					
-				</div> <button type="submit" class="btn btn-default">Submit</button>
+					 <label for="ConfirmPassword">Confirm Password</label><input type="password" class="form-control" id="exampleInputPassword1" />
+				
+				<div class="form-group">
+					 <label for="nick">Delivery Address Nickname</label><input type="text" class="form-control" id="exampleInputPassword1" />
+				</div>
+				<div class="form-group">
+					 <label for="addr">Street</label><input type="text" class="form-control" id="exampleInputPassword1" />
+				</div>
+				<div class="form-group">
+					 <label for="addr2">Street2</label><input type="text" class="form-control" id="exampleInputPassword1" />
+				</div>
+				<div class="form-group">
+					 <label for="city">City</label><input type="text" class="form-control" id="exampleInputPassword1" />
+				</div>
+				<div class="form-group">
+					 <label for="state">State</label><input type="text" class="form-control" id="exampleInputPassword1" />
+				</div>
+				<div class="form-group">
+					 <label for="zip">Zip code</label><input type="text" class="form-control" id="exampleInputPassword1" />
+				</div>
+				<div class="form-group">
+					 <label for="phone">Phone Number</label><input type="text" class="form-control" id="exampleInputPassword1" />
+				</div>
+				
+				</div> <button type="submit" name="signup" class="btn btn-default">Submit</button>
 			</form>
 		</div>
 	</div>

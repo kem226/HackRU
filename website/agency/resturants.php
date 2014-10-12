@@ -34,10 +34,10 @@
 
 </head>
 
-<body id="page-top" class="pages">
+<header id="page-top" class="pages">
 
     <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top navbar-shrink">
+    <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">
@@ -47,7 +47,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand page-scroll" href="#page-top">Start Bootstrap</a>
+                <a class="navbar-brand page-scroll" href="#page-top"> <img src="img/logos/logomini.png"></a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -57,16 +57,19 @@
                         <a href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#services">About</a>
+                        <a class="page-scroll" href="#services">Munch!</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#portfolio">Restaurants</a>
+                        <a class="page-scroll" href="#portfolio">Portfolio</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#about">Favorites</a>
+                        <a class="page-scroll" href="#team">Team</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#team">Account</a>
+                        <a class="page-scroll" href="#contact">Contact</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="login.html">Log in</a>
                     </li>
                 </ul>
             </div>

@@ -76,7 +76,11 @@
     </nav>
     
 <?php
- if (!isset($_POST["signup"])) {
+
+include "api-php-master/orderin/api.php";
+$ordrin_api = new Ordrin\APIs("bn1lAtr4jzqJRUZkpiiUzsIPm9Cm4aM_Vxa7QpWeYRQ", Ordrin\APIs::TEST);
+
+if (!isset($_POST["signup"])) {
     
     
     

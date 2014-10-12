@@ -33,13 +33,14 @@ app.get('/', function(req, res){
 	});
 }); 
 
-app.get('/munchies/:username', function(req, res){
+app.get('/user/:username', function(req, res){
 	var username = req.params.username; 
-
+	
+	console.log("username: " + username);
 	mongo.connect(dblink, function(err, db){
 		var user_collection = db.collection('users'); 	
 		
-		user.collection.find({ 'username' : username}).toArray(function(err, munchies){
+		user_collection.find({ 'username' : username}).toArray(function(err, munchies){
 			if(err){
 				res.json({
 					'msg' : "Failure"
@@ -52,6 +53,7 @@ app.get('/munchies/:username', function(req, res){
 });
 
 app.post('/user', function(req, res){
+	console.log("adding user...");
 	var user = {
 		'firstname' : req.body.fname, 
 		'lastname' : req.body.lname, 
@@ -86,17 +88,23 @@ app.post('/user', function(req, res){
 		}
 	};
 
+	console.log(us);
 	//put user into the mongo
 	mongo.connect(dblink, function(err, db){
+		console.log("adding to mogno");
 		var user_collection = db.collection('users'); 
 		user_collection.insert(us, function(err, docs){});
 	});
 
 	//add user to ordrin 
+	console.log("adding to ordrin");
 	ordrin.create_account(user);
 
 	//add user address to ordrin 
-	ordrin.create_addr(address); 
+	console.log('adding addrs');
+	ordrin.create_addr(address, function(){
+		res.json({ 'msg' : "ok" });	
+	}); 
 });
 
 

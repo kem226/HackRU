@@ -2,14 +2,14 @@ var express = require('express');
 var mongo = require('mongodb').MongoClient; 
 var objectID = require('mongodb').ObjectID; 
 var bodyParser = require('body-parser'); 
-var ordrinapi = require('ordrin-api');
+var ordrin = require('ordrin-api');
 var request = require('request');
 
 var app = express(); 
 var dblink = process.env.MONGO_DB_LINK;
 var ordrkey = process.env.ORDRIN_API_KEY;
 
-var ordrin = new ordrinapi.APIs(ordrkey, ordrinapi.TEST);
+var ordrin_api = new ordrin.APIs(ordrkey, ordrin.TEST);
 
 app.use(bodyParser.json());
 
@@ -40,7 +40,7 @@ app.get('/user/:username', function(req, res){
 	mongo.connect(dblink, function(err, db){
 		var user_collection = db.collection('users'); 	
 		
-		user_collection.find({ 'username' : username}).toArray(function(err, munchies){
+		user_collection.find({ 'email' : username}).toArray(function(err, munchies){
 			if(err){
 				res.json({
 					'msg' : "Failure"
@@ -72,10 +72,10 @@ app.post('/user', function(req, res){
 	};
 
 	var us = {
-		'firstname' : req.body.first_name, 
-		'lastname' : req.body.last_name, 
+		'firstname' : req.body.fname, 
+		'lastname' : req.body.lname, 
 		'email': req.body.email, 
-		'pw' : req.body.pw, 
+		'pw' : req.body.password, 
 		'address' : {
 			'email' : req.body.email, 
 			'nick' : req.body.nick, 
@@ -84,7 +84,7 @@ app.post('/user', function(req, res){
 			'addr' : req.body.addr,
 			'city' : req.body.city, 
 			'state' : req.body.state, 
-			'current_password' : req.body.pw
+			'current_password' : req.body.password
 		}
 	};
 
@@ -93,21 +93,21 @@ app.post('/user', function(req, res){
 	mongo.connect(dblink, function(err, db){
 		console.log("adding to mogno");
 		var user_collection = db.collection('users'); 
-		user_collection.insert(us, function(err, docs){});
+		user_collection.insert(us, function(err, docs){
+			if(!err) console.log("added to mongo");		
+		});
 	});
 
 	//add user to ordrin 
 	console.log("adding to ordrin");
-	ordrin.create_account(user);
+	ordrin_api.create_account(user, function(){});
 
 	//add user address to ordrin 
 	console.log('adding addrs');
-	ordrin.create_addr(address, function(){
+	ordrin_api.create_addr(address, function(){
 		res.json({ 'msg' : "ok" });	
 	}); 
 });
-
-
 
 app.post('/munchies/:username', function(req, res){ 
 	var restaurantName = req.body.rname; 

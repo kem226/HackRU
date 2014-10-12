@@ -1,15 +1,17 @@
 /**
  * Pebble Munchies
  * 
- * Order food from you watch
+ * Order food from your watch
  */ 
-
 var UI = require('ui');
 var Vector2 = require('vector2');
 var Settings = require('settings'); 
-var username = Settings.data('username'); 
-var password = Settings.data('password');
 var ajax = require('ajax');
+var items;
+var username;
+var password;
+var selection1;
+var selection2;
 //Fetch user settings
 Settings.config(
 	{ 
@@ -17,15 +19,13 @@ Settings.config(
 	},
 	function(e){
     console.log("Settings fetched:" + e);
+    username = Settings.data('username'); 
+    password = Settings.data('password');
 	}, 
 	function(e){
 		console.log(JSON.stringify(e.options)); 
 	}
 );
-var favoriteplaces = new UI.Menu({
-  fullscreen: true,
-  backgroundColor: 'white'
-});
 var main = new UI.Window({
   fullscreen: true,
   backgroundColor: 'white'
@@ -56,19 +56,62 @@ main.add(logo);
 main.add(text1);
 main.add(text2);
 main.show();
+console.log('main menu displayed');
+var favoriteplacesMenu = new UI.Menu({
+  sections: [{
+    items: [{
+      font: 'gothic-12-bold',
+      title: 'Favorite Places Menu'
+    }]
+  }]
+});
+var favoritefoodsMenu = new UI.Menu({
+  sections: [{
+   items: [{
+      font: 'gothic-12-bold',
+      title: 'Favorite Foods Menu'
+    }]
+  }]
+});
+var orderConfirmation = new UI.Card({
+  action: {
+    up: 'images/Yes_action.png',
+    down: 'images/No_action.png'
+  }
+});
 main.on('click', 'select', function(e) {
+  console.log('Event: \'select\' on main');
   favoriteplacesMenu.show();
 });
-favoriteplaces.on('click', 'select', function(e) {
+favoriteplacesMenu.on('select', function(e) {
+  console.log('Event: \'select\' on foodplacesMenu');
+  for (var i = 0; i < items.favoriteplaces[selection1].length; i++)
+  {
+    favoritefoodsMenu.item(0, i, { title: items.favoriteplaces.munchies[i].nickname });
+  }
   favoritefoodsMenu.show();
 });
-var uData  = Settings.data();
-//Fetch user data
-var favoriteplacesMenu = new UI.Menu();
-var favoritefoodsMenu = new UI.Menu();
-ajax(
+orderConfirmation.on('click', 'up', function(e){
+   ajax(
   {
-    url: 'http://api.pebblemunchies.me/munchies/' + uData.username,
+    url: 'http://pebblemunchies.me:5000/order/' + encodeURIComponent(items.favoriteplaces[selection1].munchies[selection2]),
+    type: 'json'
+  },
+  function(sucMsg) {
+    console.log('Successfully fetched user data');
+  },
+  function(error) {
+    console.log('Error fetching user data: ' + error);
+    var items;
+    return items;
+  });
+});
+var isData  = Settings.data();
+//Fetch user data
+if (isData)
+  ajax(
+  {
+    url: 'http://api.pebblemunchies.me:5000/munchies/' + username,
     type: 'json'
   },
   function(data) {
@@ -78,13 +121,16 @@ ajax(
     }
     var items = [];
     items = JSON.parse(data);
-    var favoriteplacesMenu = new UI.Menu({
+    favoriteplacesMenu = new UI.Menu({
       sections: [{
-        title: 'Favorite Places:',
-        //items: items.favoriteplaces
+        title: 'Favorite Places:'
       }]
     });
-    var favoritefoodsMenu = new UI.Menu({
+    for (var j = 0; j < items.favoriteplaces.length; j++)
+    {
+      favoriteplacesMenu.item(0, j, { title: items.favoriteplaces[j].munchies.nick, subtitle: items.favoriteplaces[j].munchies.delivery_time});
+    }
+    favoritefoodsMenu = new UI.Menu({
       sections: [{
         title: 'Favorite Foods',
         //items: items.favoritefoods
@@ -98,6 +144,9 @@ ajax(
     return items;
   }
 );
+else
+  console.log('uData is empty, no user data request made');
+
 /*
 main.on('click', 'select', function(e) {
 	setting.config(

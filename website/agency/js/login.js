@@ -8,15 +8,13 @@ $(document).ready(function() {
   
 function loginSubmit(){
     
-    document.getElementById("lemail").style.color = "red";
-    
     var username = document.getElementById("lemail").value;
     var password = document.getElementById("lpass").value;
     
     var requestResponse = loginRequest(username,password);
     
-    
-    if (requestResponse === "ok") {
+     console.log(requestResponse);
+    if (requestResponse == "ok") {
         localStorage.setItem('username', username);
         localStorage.setItem('password', password);
         window.location.replace("http://pebblemunchies.me/restaurants.html");
@@ -38,8 +36,8 @@ function signupSubmit(){
     
     var requestResponse = signupRequest(username,password,addr,city,state,zip,phone,fname,lname,nick);
     
-    
-    if (requestResponse === "ok") {
+    console.log(requestResponse);
+    if (requestResponse == "ok") {
         localStorage.setItem('username', username);
         localStorage.setItem('password', password);
         window.location.replace("http://pebblemunchies.me/restaurants.html");
@@ -65,7 +63,8 @@ function loginRequest(username,password) {
   
   request.send(JSON.stringify(user));
   
-  return request.responseText;
+  var obj = JSON.parse(request.responseText);
+  return obj.msg;
 
 }
 
@@ -93,7 +92,9 @@ function signupRequest(username,password,addr,city,state,zip,phone,fname,lname,n
   
   request.send(JSON.stringify(user));
   
-  return request.responseText;
+  var obj = JSON.parse(request.responseText);
+  
+  return obj.msg;
     
 }
 

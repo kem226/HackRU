@@ -49,8 +49,6 @@ function signupSubmit(){
   
 function loginRequest(username,password) {
 
-  muchiesAPI();
-  
   var request = new XMLHttpRequest();
   
   request.open("POST","http://pebblemunchies.me:5000/login",false);
@@ -71,7 +69,6 @@ function loginRequest(username,password) {
  
 function signupRequest(username,password,addr,city,state,zip,phone,fname,lname,nick) {
     
-  muchiesAPI();
   var request = new XMLHttpRequest();
   request.open("POST","http://pebblemunchies.me:5000/user",false);
   request.setRequestHeader("Content-type","application/json");

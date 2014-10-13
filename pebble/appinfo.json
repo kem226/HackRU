@@ -30,6 +30,16 @@
                 "type": "font"
             },
             {
+                "file": "images/No_action.png",
+                "name": "IMAGES_NO_ACTION_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/Yes_action.png",
+                "name": "IMAGES_YES_ACTION_PNG",
+                "type": "png"
+            },
+            {
                 "file": "images/logosmall.png",
                 "name": "IMAGES_LOGOSMALL_PNG",
                 "type": "png"

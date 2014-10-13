@@ -2,14 +2,14 @@ var express = require('express');
 var mongo = require('mongodb').MongoClient; 
 var objectID = require('mongodb').ObjectID; 
 var bodyParser = require('body-parser'); 
-var ordrinapi = require('ordrin-api');
+var ordrin = require('ordrin-api');
 var request = require('request');
 
 var app = express(); 
 var dblink = process.env.MONGO_DB_LINK;
 var ordrkey = process.env.ORDRIN_API_KEY;
 
-var ordrin = new ordrinapi.APIs(ordrkey, ordrinapi.TEST);
+var ordrin_api = new ordrin.APIs(ordrkey, ordrin.TEST);
 
 app.use(bodyParser.json());
 
@@ -40,7 +40,7 @@ app.get('/user/:username', function(req, res){
 	mongo.connect(dblink, function(err, db){
 		var user_collection = db.collection('users'); 	
 		
-		user_collection.find({ 'username' : username}).toArray(function(err, munchies){
+		user_collection.find({ 'email' : username}).toArray(function(err, munchies){
 			if(err){
 				res.json({
 					'msg' : "Failure"
@@ -61,6 +61,7 @@ app.post('/user', function(req, res){
 		'pw' : req.body.password
 	}; 
 	var address = {
+		'datetime' : 'ASAP',
 		'email' : req.body.email, 
 		'nick' : req.body.nick, 
 		'phone' : req.body.phone, 
@@ -72,11 +73,12 @@ app.post('/user', function(req, res){
 	};
 
 	var us = {
-		'firstname' : req.body.first_name, 
-		'lastname' : req.body.last_name, 
+		'firstname' : req.body.fname, 
+		'lastname' : req.body.lname, 
 		'email': req.body.email, 
-		'pw' : req.body.pw, 
+		'pw' : req.body.password, 
 		'address' : {
+			'datetime' : 'ASAP',
 			'email' : req.body.email, 
 			'nick' : req.body.nick, 
 			'phone' : req.body.phone, 
@@ -84,7 +86,7 @@ app.post('/user', function(req, res){
 			'addr' : req.body.addr,
 			'city' : req.body.city, 
 			'state' : req.body.state, 
-			'current_password' : req.body.pw
+			'current_password' : req.body.password
 		}
 	};
 
@@ -93,21 +95,85 @@ app.post('/user', function(req, res){
 	mongo.connect(dblink, function(err, db){
 		console.log("adding to mogno");
 		var user_collection = db.collection('users'); 
-		user_collection.insert(us, function(err, docs){});
+		user_collection.insert(us, function(err, docs){
+			if(!err) console.log("added to mongo");		
+		});
 	});
 
 	//add user to ordrin 
 	console.log("adding to ordrin");
-	ordrin.create_account(user);
+	ordrin_api.create_account(user, function(){});
 
 	//add user address to ordrin 
 	console.log('adding addrs');
-	ordrin.create_addr(address, function(){
+	ordrin_api.create_addr(address, function(){
 		res.json({ 'msg' : "ok" });	
 	}); 
 });
 
+app.post('/cc/:email', function(req, res){
+	var email = req.params.email;
 
+	var cc = {
+		'email' : email, 
+		'nick' : req.body.nick, 
+		'card_number' : req.body.card_number, 
+		'card_cvc' : req.body.card_cvc, 
+		'card_expiry' : req.body.card_expiry, 
+		'bill_addr' : req.body.bill_addr, 
+		'bill_city' : req.body.bill_city, 
+		'bill_state' : req.body.bill_state, 
+		'bill_zip' : req.body.bill_zip,
+		'bill_phone' : req.body.bill_phone, 
+		'current_password' : req.body.password
+	};
+	 
+	ordrin_api.create_cc(cc, function(){ console.log("created stuff"); res.json({'msg' : 'ok' }); });
+});
+
+app.get('/delivery/:email', function(req, res){
+	var email = req.params.email;
+		
+	mongo.connect(dblink, function(err, db){
+		var user_collection = db.collection('users'); 
+		
+		user_collection.find({ 'email' : email }).toArray(function(err, docs){
+			var user = docs[0]; 	
+			var info = {
+				datetime : 'ASAP',
+				addr : user.address.addr, 
+				city : user.address.city,
+				zip : user.address.zip, 
+			}; 
+			console.log(info);
+			
+			var urlstring = "https://r-test.ordr.in/dl/" + info.datetime + '/' + info.zip + '/' + info.city + '/' + info.addr + '?_auth=1,'+ordrkey; 
+			console.log(urlstring);	
+			var uri = encodeURI(urlstring);
+			console.log(uri);
+			
+			var details = [];	
+			
+			request.get(uri, function(err, response, body){
+				var places = JSON.parse(body);
+				for(place in places){
+					var args = {}; 
+					args.rid = places[place].id.toString(); 
+					console.log(args);
+
+					request.get("https://r-test.ordr.in/rd/" + args.rid + "?_auth=1,"+ordrkey, function(err, response, body){
+						details.push(body);	
+					});
+				}
+			}); 
+
+			setTimeout(function(){res.json(details);}, 5000); 
+
+		}); 
+	});
+
+
+});
 
 app.post('/munchies/:username', function(req, res){ 
 	var restaurantName = req.body.rname; 
@@ -129,7 +195,7 @@ app.post('/munchies/:username', function(req, res){
 	mongo.connect(dblink, function(err, db){
 		var user_collection = db.collection('users'); 
 
-		user_collection.find({ 'username': username }).toArray(function(err, munchies){
+		user_collection.find({ 'email': username }).toArray(function(err, munchies){
 			if(err){
 				res.json({
 					'msg' : 'Failure'
@@ -142,10 +208,6 @@ app.post('/munchies/:username', function(req, res){
 
 	});
 }); 
-
-app.post('/user', function(req, res){
-	
-});
 
 app.post('/order', function(req, res){
 	
